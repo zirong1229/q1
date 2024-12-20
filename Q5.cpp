@@ -4,18 +4,16 @@
 using namespace std;
 
 struct Drink {
-    string name;      
-    bool isHot;      
+    string name;
+    bool tem;
     int price;
-    double shelfLife; 
+    double shelfLife;
 };
-
 
 struct Node {
-    Drink data;      
-    Node* next;    
+    Drink data;
+    Node* next;
 };
-
 
 void append(Node*& head, const Drink& drink) {
     Node* newNode = new Node{drink, nullptr};
@@ -34,40 +32,11 @@ void printList(const Node* head) {
     const Node* temp = head;
     while (temp != nullptr) {
         cout << "Name: " << temp->data.name << "\n";
-        cout << "Temperature: " << (temp->data.isHot ? "Hot" : "Cold") << "\n";
+        cout << "Temperature: " << (temp->data.tem ? "Hot" : "Cold") << "\n";
         cout << "Price: " << temp->data.price << " NT\n";
         cout << "Shelf Life: " << temp->data.shelfLife << " years\n";
         cout << "---------------------\n";
         temp = temp->next;
-    }
-}
-
-void deleteDrink(Node*& head, const string& drinkName) {
-    if (head == nullptr) {
-        cout << "The list is empty. No drink to delete.\n";
-        return;
-    }
-
-    if (head->data.name == drinkName) {
-        Node* temp = head;
-        head = head->next; 
-        delete temp;     
-        cout << "Drink \"" << drinkName << "\" has been deleted.\n";
-        return;
-    }
-
-    Node* current = head;
-    while (current->next != nullptr && current->next->data.name != drinkName) {
-        current = current->next;
-    }
-
-    if (current->next != nullptr) {
-        Node* temp = current->next;
-        current->next = temp->next; 
-        delete temp;               
-        cout << "Drink \"" << drinkName << "\" has been deleted.\n";
-    } else {
-        cout << "Drink \"" << drinkName << "\" not found in the list.\n";
     }
 }
 
@@ -89,18 +58,11 @@ int main() {
     append(head, {"juice", false, 18, 0.83});
     append(head, {"corn soup", true, 30, 1.0});
     append(head, {"adzuki bean soup", true, 35, 0.91});
+    append(head, {"sparkling water", false, 23, 0.75});
 
-
-    string drinkName;
-    cout << "\nEnter the name of the drink to delete: ";
-    cin >> drinkName;
-
-    deleteDrink(head, drinkName);
-
-    cout << "\nUpdated Drinks List:\n";
+    cout << "Drink List in Vending Machine:\n";
     cout << "==============================\n";
     printList(head);
-
 
     freeList(head);
 
