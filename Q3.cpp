@@ -4,15 +4,15 @@
 using namespace std;
 
 struct Drink {
-    string name;    
-    bool tem;      
-    int price;       
+    string name;      
+    bool tem;    
+    int price;        
     double shelfLife; 
 };
 
 struct Node {
-    Drink data;     
-    Node* next;     
+    Drink data;    
+    Node* next;      
 };
 
 void append(Node*& head, const Drink& drink) {
@@ -22,7 +22,7 @@ void append(Node*& head, const Drink& drink) {
     } else {
         Node* temp = head;
         while (temp->next != nullptr) {
-            temp = temp->next; 
+            temp = temp->next;
         }
         temp->next = newNode; 
     }
@@ -40,6 +40,28 @@ void printList(const Node* head) {
     }
 }
 
+
+void filterDrinks(const Node* head, bool desiredTemperature, int maxPrice) {
+    const Node* temp = head;
+    bool found = false;
+
+    while (temp != nullptr) {
+        if (temp->data.tem == desiredTemperature && temp->data.price <= maxPrice) {
+            cout << "Name: " << temp->data.name << "\n";
+            cout << "Temperature: " << (temp->data.tem ? "Hot" : "Cold") << "\n";
+            cout << "Price: " << temp->data.price << " NT\n";
+            cout << "Shelf Life: " << temp->data.shelfLife << " years\n";
+            cout << "---------------------\n";
+            found = true;
+        }
+        temp = temp->next;
+    }
+
+    if (!found) {
+        cout << "No drinks match the given criteria.\n";
+    }
+}
+
 void freeList(Node*& head) {
     Node* temp;
     while (head != nullptr) {
@@ -51,6 +73,7 @@ void freeList(Node*& head) {
 }
 
 int main() {
+
     Node* head = nullptr;
 
     append(head, {"green tea", false, 26, 0.5});
@@ -59,9 +82,18 @@ int main() {
     append(head, {"corn soup", true, 30, 1.0});
     append(head, {"adzuki bean soup", true, 35, 0.91});
 
-    cout << "Drink List in Vending Machine:\n";
+    string tempInput;
+    int maxPrice;
+    cout << "Enter temperature (hot/cold): ";
+    cin >> tempInput;
+    cout << "Enter maximum price: ";
+    cin >> maxPrice;
+
+    bool desiredTemperature = (tempInput == "hot");
+
+    cout << "\nFiltered Drinks:\n";
     cout << "==============================\n";
-    printList(head);
+    filterDrinks(head, desiredTemperature, maxPrice);
 
     freeList(head);
 
